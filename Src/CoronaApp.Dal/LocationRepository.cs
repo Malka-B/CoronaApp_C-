@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text;
 using Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System.Web.Mvc;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CoronaApp.Services.Models
 {
@@ -50,7 +48,6 @@ namespace CoronaApp.Services.Models
                 return searchList;
             }
             //start&end date
-            [BindProperty]
             else if (locationSearch.StartDate != EmptyDate && locationSearch.EndDate != EmptyDate && locationSearch.Location == null)
             {
                 List<Location> LocationList = _CoronaContext.Location.ToList();
