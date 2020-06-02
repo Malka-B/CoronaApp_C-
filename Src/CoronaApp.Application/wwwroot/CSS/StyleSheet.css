@@ -1,0 +1,27 @@
+﻿body {
+    color: lightslategrey;
+}
+
+button {
+    margin: 10px;
+}
+
+input {
+    margin: 10px;
+}
+
+th {
+    background-color: coral;
+}
+
+.locationInput {
+    margin-top: 20px;
+}
+
+.tableRow {
+    width: 40%;
+}
+
+.tableCol {
+    width: 10%;
+}
