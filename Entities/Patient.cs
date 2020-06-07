@@ -1,18 +1,19 @@
-﻿using System;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities
 {
     public class Patient
     {
-        public Patient()
-        {
-            LocationList = new HashSet<Location>();
-        }
-        public int Id { get; set; }
-        public ICollection<Location> LocationList { get; set; }
+        [Required]
+        public string Id { get; set; }
+
+        public int Age { get; set; }
+
+        public List<Location> LocationsList { get; set; }
     }
 }

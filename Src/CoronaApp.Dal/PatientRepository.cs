@@ -1,25 +1,56 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using CoronaApp.Services;
 
-namespace CoronaApp.Services.Models
+namespace CoronaApp.Dal
 {
     public class PatientRepository : IPatientRepository
     {
-        public Patient Get(string patientId)
+        CoronaContext _coronaContext;
+
+        public PatientRepository(CoronaContext coronaContext)
         {
-            //Patient patientLocations = AsDB.PatientList.Find(l => l.PatientID == patientId);
-            //if (patientLocations != null)
-            //{
-              //  return patientLocations;
-            //}
-            return null;
-            
+            _coronaContext = coronaContext;
         }
 
-        public void Save(Patient patient)
+        public async Task DeleteLocation(Location location)
         {
-        
+                Location location1 = await _coronaContext.Location
+                .FirstOrDefaultAsync(l => l.StartDate == location.StartDate &&
+                l.EndDate == location.EndDate &&
+                l.Address == location.Address &&
+                l.City == location.City);
+            _coronaContext.Location.Remove(location1);
+            await _coronaContext.SaveChangesAsync();            
+        }
+
+        public async Task<Patient> Get(string patientId)
+        {
+            Patient p = await _coronaContext.Patient
+                .Include(p => p.LocationsList)
+                .FirstOrDefaultAsync(p => p.Id == patientId);
+            return p;
+        }
+
+        public async Task Save(Patient patient)
+        {
+            Patient patientToUpdate = await _coronaContext.Patient
+                .Include(p => p.LocationsList)
+                .FirstOrDefaultAsync(p => p.Id == patient.Id);
+            if (patientToUpdate != null)
+            {
+                patientToUpdate.LocationsList.AddRange(patient.LocationsList);
+            }
+            else
+            {
+                await _coronaContext.Patient.AddAsync(patient);
+            }
+            await _coronaContext.SaveChangesAsync();
         }
     }
 }
