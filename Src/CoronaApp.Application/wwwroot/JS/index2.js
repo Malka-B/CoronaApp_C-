@@ -64,7 +64,7 @@ if (typeof search !== undefined) {
         var data = JSON.parse(localData);
         for (var i = 0; i < data.length; i++) {
             const li = document.createElement('li');
-            li.innerText = data[i].startDate + " | " + data[i].endDate + " | " + data[i].address + " | " + data[i].city;
+            li.innerText = data[i].startDate + " | " + data[i].endDate + " | " + data[i].adress + " | " + data[i].city;
             + " | " + data[i].patientId;
             div.appendChild(li);
         }

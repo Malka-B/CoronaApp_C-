@@ -10,7 +10,7 @@ namespace CoronaApp.Services.Models
         public List<Location> Get()
         {
             return new List<Location> {
-                new Location() { Address="aaa",City="bbb",EndDate=DateTime.Now,StartDate=DateTime.Now} };
+                new Location() { Adress="aaa",City="bbb",EndDate=DateTime.Now,StartDate=DateTime.Now} };
         }
 
         public List<Location> Get(LocationSearch locationSearch)

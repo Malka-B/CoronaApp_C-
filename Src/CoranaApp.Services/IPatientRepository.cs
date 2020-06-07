@@ -10,7 +10,7 @@ namespace CoronaApp.Services
 {
     public interface IPatientRepository
     {
-        public Task<Patient> Get(string id);
+        public Task<Patient> Get(int patientId);
 
         public Task Save(Patient patient);
 

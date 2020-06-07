@@ -20,7 +20,7 @@ namespace CoronaApp.Services
             await _patientRepository.DeleteLocation(location);
         }
 
-        public async Task<Patient> Get(string patientId)
+        public async Task<Patient> Get(int patientId)
         {
             return await _patientRepository.Get(patientId);
         }

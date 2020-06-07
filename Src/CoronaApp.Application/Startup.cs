@@ -32,10 +32,11 @@ namespace CoronaApp.Api
         {
             services.AddControllers();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             //services.AddScoped<ILocationService, LocationTestService>();
             services.AddScoped<ILocationService, LocationService>();
-            services.AddScoped<ICoronaContext, CoronaContext>();
+           // services.AddScoped<ICoronaContext, CoronaContext>();
             services.AddMvc();
             services.AddDbContext<CoronaContext>(
                   options => options.UseSqlServer(Configuration.GetConnectionString("CoronaDBConnectionString")));

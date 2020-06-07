@@ -23,13 +23,13 @@ namespace CoronaApp.Dal
                 Location location1 = await _coronaContext.Location
                 .FirstOrDefaultAsync(l => l.StartDate == location.StartDate &&
                 l.EndDate == location.EndDate &&
-                l.Address == location.Address &&
+                l.Adress == location.Adress &&
                 l.City == location.City);
             _coronaContext.Location.Remove(location1);
             await _coronaContext.SaveChangesAsync();            
         }
 
-        public async Task<Patient> Get(string patientId)
+        public async Task<Patient> Get(int patientId)
         {
             Patient p = await _coronaContext.Patient
                 .Include(p => p.LocationsList)

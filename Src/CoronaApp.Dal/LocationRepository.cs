@@ -11,14 +11,16 @@ namespace CoronaApp.Services.Models
 {
     public class LocationRepository : ILocationRepository
     {
-        ICoronaContext _CoronaContext;
-        public LocationRepository(ICoronaContext coronaContext)
+        private readonly CoronaContext _CoronaContext;
+
+        public LocationRepository(CoronaContext coronaContext)
         {
             _CoronaContext = coronaContext;
         }
         public List<Location> Get()
         {
-            List<Location> LocationList = _CoronaContext.Location.ToList();
+           // List<Location> LocationList = _CoronaContext.Location.ToList();
+           var LocationList = _CoronaContext.Location.ToList();
             LocationList.Sort();
             return LocationList;
         }
@@ -30,7 +32,7 @@ namespace CoronaApp.Services.Models
             if (locationSearch.Location != "" && locationSearch.StartDate == EmptyDate && locationSearch.EndDate == EmptyDate)
             {
                 List<Location> LocationList = _CoronaContext.Location.ToList();
-                List<Location> searchList = LocationList.FindAll(x => x.Address.ToLower().Contains(locationSearch.Location.ToLower()));
+                List<Location> searchList = LocationList.FindAll(x => x.Adress.ToLower().Contains(locationSearch.Location.ToLower()));
                 return searchList;
             }
             //only startDate
@@ -61,7 +63,7 @@ namespace CoronaApp.Services.Models
                 List<Location> searchList = LocationList
                     .FindAll(x => x.StartDate >= locationSearch.StartDate
                 && x.EndDate <= locationSearch.EndDate
-                && x.Address.ToLower().Contains(locationSearch.Location.ToLower()));
+                && x.Adress.ToLower().Contains(locationSearch.Location.ToLower()));
                 return searchList;
             }
             //age only
@@ -72,7 +74,7 @@ namespace CoronaApp.Services.Models
                 List<Location> searchList = LocationList
                     .FindAll(x => x.StartDate >= locationSearch.StartDate
                 && x.EndDate <= locationSearch.EndDate
-                && x.Address.ToLower().Contains(locationSearch.Location.ToLower()));
+                && x.Adress.ToLower().Contains(locationSearch.Location.ToLower()));
                 return searchList;
             }
             */

@@ -1,5 +1,4 @@
 ﻿body {
-    color: lightslategrey;
 }
 
 button {
@@ -11,7 +10,7 @@ input {
 }
 
 th {
-    background-color: coral;
+    background-color: forestgreen;
 }
 
 .locationInput {
@@ -20,6 +19,8 @@ th {
 
 .tableRow {
     width: 40%;
+    background-color: lightgreen;
+    text-align: center;
 }
 
 .tableCol {

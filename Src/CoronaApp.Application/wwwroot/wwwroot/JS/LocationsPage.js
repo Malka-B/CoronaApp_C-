@@ -133,9 +133,9 @@ function addLocation() {
         city: document.getElementById('cityInput').value,
         adress: document.getElementById('locationInput').value
     };
-    patientToSave.id = document.getElementById('PatientID').value;
-    patientToSave.age = parseInt(document.getElementById('ageInput').value);
-    debugger;
+
+    patientToSave.id = parseInt(document.getElementById('PatientID').value);
+    patientToSave.age = parseInt(document.getElementById('ageInput').value);   
     patientToSave.locationsList.push(location);
     document.getElementById('startDateInput').value = "";
     document.getElementById('endDateInput').value = "";

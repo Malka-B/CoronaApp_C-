@@ -10,7 +10,7 @@ namespace Entities
     public class Patient
     {
         [Required]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public int Age { get; set; }
 

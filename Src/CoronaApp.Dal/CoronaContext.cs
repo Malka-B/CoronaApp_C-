@@ -7,31 +7,34 @@ using System.Collections.Generic;
 
 namespace CoronaApp.Dal
 {
-    public class CoronaContext : DbContext,ICoronaContext
+    public class CoronaContext : DbContext//,ICoronaContext
     {
-        public CoronaContext(DbContextOptions<CoronaContext> options)
-          : base(options) { }
+        public CoronaContext(DbContextOptions<CoronaContext> options): base(options) 
+        { 
+
+        }
         public CoronaContext()
         { }
 
         public DbSet<Location> Location { get; set; }
         public DbSet<Patient> Patient { get; set; }
 
-        public IEnumerable<IDbContextOptionsExtension> Extensions => throw new System.NotImplementedException();
+        
+        //public IEnumerable<IDbContextOptionsExtension> Extensions => throw new System.NotImplementedException();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
 
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                .UseSqlServer("Data Source = myComputer; Initial Catalog = CoronaApp; Integrated Security = True");
-            }
-        }
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder
+        //        .UseSqlServer("Data Source = myComputer; Initial Catalog = CoronaApp; Integrated Security = True");
+        //    }
+        //}
 
-        TExtension IDbContextOptions.FindExtension<TExtension>()
-        {
-            throw new System.NotImplementedException();
-        }
+        //TExtension IDbContextOptions.FindExtension<TExtension>()
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

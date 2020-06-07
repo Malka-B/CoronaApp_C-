@@ -176,7 +176,7 @@ function getLocationsById() {
                 }
             }
         };
-        xhttp.open("GET", "/api/Patient?patientId=" + document.getElementById('PatientID').value, true);
+        xhttp.open("GET", "/api/Patient?patientId=" + parseInt(document.getElementById('PatientID').value), true);
         xhttp.send();
     }
 }
