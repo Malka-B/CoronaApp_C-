@@ -26,7 +26,8 @@ namespace CoronaApp.Api.Controllers
         [HttpGet]
         public async Task<Patient> Get([FromQuery] int patientId)
         {
-            //Log.Information($"Someone gets patient with id: {patientId}");
+            Log.Information($"Someone gets patient with id: {patientId}");
+            console.log("kffkkfd");
             return await _patientService.Get(patientId);
         }
 
