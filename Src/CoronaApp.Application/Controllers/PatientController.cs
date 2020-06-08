@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CoronaApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Entities;
+using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,8 +27,7 @@ namespace CoronaApp.Api.Controllers
         [HttpGet]
         public async Task<Patient> Get([FromQuery] int patientId)
         {
-            Log.Information($"Someone gets patient with id: {patientId}");
-            console.log("kffkkfd");
+            Log.Information($"Someone gets patient with id: {patientId}");            
             return await _patientService.Get(patientId);
         }
 
