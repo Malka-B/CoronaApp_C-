@@ -1,5 +1,7 @@
 ﻿using CoronaApp.Services;
+using CoronaApp.Services.Models;
 using Entities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,24 +11,31 @@ namespace CoronaApp.Dal
 {
     public class AsDB : IPatientRepository
     {
-        public Task DeleteLocation(Location location)
+        public Task DeleteLocationAsync(Location location)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Patient> Get(int id)
+        public Task<Patient> GetAsync(int patientId)
         {
-            Patient p = new Patient { Id = id, Age = 55, LocationsList = new List<Location> { } };
-
-            return Task.FromResult(p); 
+            throw new NotImplementedException();
         }
-    
 
-    public Task Save(Patient patient)
-    {
-        throw new NotImplementedException();
+        public Task<Patient> LoginAsync(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RegisterAsync(int id, string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveAsync(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
     }
-}
 
-        
+
 }

@@ -1,4 +1,6 @@
-﻿using Entities;
+﻿using CoronaApp.Services.Models;
+using Entities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,10 +10,14 @@ namespace CoronaApp.Services
 {
     public interface IPatientService
     {
-        public Task<Patient> Get(int patientId);
+        public Task<Patient> GetAsync(int patientId);
 
-        public Task Save(Patient patient);
+        public Task SaveAsync(Patient patient);
 
-        public Task DeleteLocation(Location location);
+        public Task DeleteLocationAsync(Location location);
+
+        public Task<IdAndToken> LoginAsync(string userName, string password);
+                
+        public Task<string> RegisterAsync(int id, string userName, string password);
     }
 }
