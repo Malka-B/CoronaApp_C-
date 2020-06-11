@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Inventory Management'
+  description: 'Product API to get and post products'
+  contact:
+    name: Malka
+    email: mb0583219718@gmail.com
+    
+servers: 
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BrixBootCamp/Inventory_managment_oas3/1.0.0
+  - url: http://localhost:54421
+    description: Products Inventory Server
+    
+    
+paths:
+  /products/saveProduct:
+    post:
+      description: Posting product into Inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Product'
+        
+      responses:
+        200:
+          description: Successful post new product
+  /products/getCount:
+    get:
+      description: Gives all the products in Inventory by category id, product id and name
+      parameters: 
+        - name: Category Id
+          in: query
+          description: The category id of product returned
+          schema:
+            type: integer
+            example: 5
+            
+        - name: Pruduct Id
+          in: query
+          description: The pruduct id of product returned
+          schema:
+            type: integer
+            example: 2
+            
+        - name: Pruduct Name
+          in: query
+          description: The pruduct name of product returned
+          schema:
+            type: string
+            example: apple
+            
+      responses:
+        200:
+          description: Successful pull of product info
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Product'
+                
+  /products/{categoryId}:
+    get:
+      description: Gives all the products in cart by category id
+      parameters: 
+        - name: categoryId
+          in: path
+          description: The category id of product returned
+          required: true
+          schema:
+            type: integer
+            example: 5
+        
+      responses:
+        200:
+          description: Successful pull of product info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+              
+
+    
+          
+                       
+components:
+  schemas:
+    Products:
+      description: Model containing array of product info
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    
+    Product:
+      description: Model containing product info
+      properties:
+        category id:
+          type: integer
+          example: 5
+        
+        product id:
+          type: integer
+          example: 2
+          
+        product name:
+          type: string
+          example: apple
+          
+        product price:
+          type: integer
+          example: 8
+          
+        product amount:
+          type: integer
+          example: 351

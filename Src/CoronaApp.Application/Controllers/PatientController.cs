@@ -31,6 +31,10 @@ namespace CoronaApp.Api.Controllers
         }
 
         // GET api/<PatientController>/5
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <returns> Patient by id from token</returns>
         [HttpGet]
         public async Task<ActionResult<Patient>> GetAsync()
         {

@@ -21,13 +21,10 @@ const bodyTableRows = document.createElement('tbody');
 bodyTableRows.id = 'bodyTableRows';
 
 const buttonsDiv = document.createElement('div');
-//buttonsDiv.id = 'buttonsDiv';
 
 const inputsDiv = document.createElement('div');
-//inputsDiv.id = 'inputsDiv';
 
 const tableDiv = document.createElement('div');
-//tableDiv.id = 'tableDiv';
 tableDiv.style.display = 'none';
 
 const locationsTable = document.createElement('table');
@@ -82,7 +79,6 @@ const registerIdInput = document.createElement('input');
 registerIdInput.setAttribute('type', 'text');
 registerIdInput.placeholder = 'Id';
 registerIdInput.id = 'registerId';
-//registerIdInput.classList.add("locationInput");
 registerDiv.appendChild(registerIdInput);
 
 const registerPasswordLabel = document.createElement('label');
@@ -93,7 +89,6 @@ const registerPasswordInput = document.createElement('input');
 registerPasswordInput.setAttribute('type', 'text');
 registerPasswordInput.placeholder = 'Password';
 registerPasswordInput.id = 'registerPassword';
-//registerPasswordInput.classList.add("locationInput");
 registerDiv.appendChild(registerPasswordInput);
 
 const registerUserNameLabel = document.createElement('label');
@@ -104,7 +99,6 @@ const registerUserNameInput = document.createElement('input');
 registerUserNameInput.setAttribute('type', 'text');
 registerUserNameInput.placeholder = 'User name';
 registerUserNameInput.id = 'registerUserName';
-//registerUserNameInput.classList.add("locationInput");
 registerDiv.appendChild(registerUserNameInput);
 
 const saveRegisterBtn = document.createElement('button');
@@ -128,11 +122,11 @@ getLocationsByIdBtn.innerText = 'Get locations';
 getLocationsByIdBtn.addEventListener('click', getLocationsById);
 document.body.appendChild(getLocationsByIdBtn);
 
-//check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 const colValues = ['Start date', 'End date', 'city', 'location', 'remove'];
 const tableRow = document.createElement('tr');
 tableRow.classList.add("tableRow");
-//tableRow.id = row;
+tableRow.id = row;
 for (let k = 0; k < colValues.length; k++) {
     const tableCol = document.createElement('th');
     tableCol.innerText = colValues[k];

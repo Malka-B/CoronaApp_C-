@@ -19,6 +19,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace CoronaApp.Api
 {
@@ -69,6 +71,8 @@ namespace CoronaApp.Api
                         Title = "CoronaApp API",
                         Version = "1"
                     });
+                //var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlCommentFullPath = Path.Combine(AppContext);
                 setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
