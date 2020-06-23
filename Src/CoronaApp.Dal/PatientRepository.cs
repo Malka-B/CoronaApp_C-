@@ -22,24 +22,24 @@ namespace CoronaApp.Dal
 
         public async Task DeleteLocationAsync(Location location)
         {
-                Location location1 = await _coronaContext.Location
-                .FirstOrDefaultAsync(l => l.StartDate == location.StartDate &&
-                                          l.EndDate == location.EndDate &&
-                                          l.Adress == location.Adress &&
-                                          l.City == location.City);
+            Location location1 = await _coronaContext.Location
+            .FirstOrDefaultAsync(l => l.StartDate == location.StartDate &&
+                                      l.EndDate == location.EndDate &&
+                                      l.Adress == location.Adress &&
+                                      l.City == location.City);
             _coronaContext.Location.Remove(location1);
-            await _coronaContext.SaveChangesAsync();            
+            await _coronaContext.SaveChangesAsync();
         }
 
         public async Task<Patient> GetAsync(int patientId)
         {
             Patient p = await GetPatientByIdAsync(patientId);
             return p;
-        }        
+        }
 
         public async Task SaveAsync(Patient patient)
         {
-            Patient patientToUpdate = await GetPatientByIdAsync(patient.Id); 
+            Patient patientToUpdate = await GetPatientByIdAsync(patient.Id);
             if (patientToUpdate != null)
             {
                 patientToUpdate.LocationsList.AddRange(patient.LocationsList);
@@ -53,13 +53,19 @@ namespace CoronaApp.Dal
 
         public async Task<Patient> LoginAsync(string userName, string password)
         {
-            Patient loginPatient = await GetPatientByUserNamePasswordAsync(userName,password);
-            return loginPatient;            
+            Patient loginPatient = await _coronaContext.Patient
+                                                        .Include(p => p.LocationsList)
+                                                        .FirstOrDefaultAsync(p => p.UserName == userName
+                                                        && p.Password == password);
+            return loginPatient;
         }
 
         public async Task<bool> RegisterAsync(int id, string userName, string password)
         {
-            Patient p = await GetPatientByUserNamePasswordAsync(userName, password);
+            Patient p = await _coronaContext.Patient
+                                            .Include(p => p.LocationsList)
+                                            .FirstOrDefaultAsync(p => p.UserName == userName
+                                            && p.Password == password);
             if (p == null)
             {
                 Patient newPatient = new Patient { Id = id, UserName = userName, Password = password };
@@ -69,15 +75,15 @@ namespace CoronaApp.Dal
             return true;
         }
 
-        public async Task<Patient> GetPatientByUserNamePasswordAsync(string userName, string password)
-        {
-            return await _coronaContext.Patient
-                .Include(p => p.LocationsList)
-                .FirstOrDefaultAsync(p => p.UserName == userName
-                                    && p.Password == password);
-        }
+        //public async Task<Patient> GetPatientByUserNamePasswordAsync(string userName, string password)
+        //{
+        //    return await _coronaContext.Patient
+        //        .Include(p => p.LocationsList)
+        //        .FirstOrDefaultAsync(p => p.UserName == userName
+        //                               && p.Password == password);
+        //}
 
-        public async Task<Patient> GetPatientByIdAsync(int patientId)
+        private async Task<Patient> GetPatientByIdAsync(int patientId)
         {
             return await _coronaContext.Patient
                             .Include(p => p.LocationsList)

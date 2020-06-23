@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CoronaApp.Api.Controllers
 {
-    public class TokenController
+    public class LoginController
     {
     }
 }

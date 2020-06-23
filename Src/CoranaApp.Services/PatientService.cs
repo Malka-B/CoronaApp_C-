@@ -1,5 +1,6 @@
 ﻿using CoronaApp.Services.Models;
 using Entities;
+using Message;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,16 +9,21 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using NServiceBus;
+using NServiceBus.Logging;
 
 namespace CoronaApp.Services
 {
     public class PatientService : IPatientService
     {
         private readonly IPatientRepository _patientRepository;
-        
-        public PatientService(IPatientRepository patientRepository)
+        private readonly IEndpointInstance endpointInstance;
+          
+
+        public PatientService(IPatientRepository patientRepository, IEndpointInstance endpointInstance)
         {
             _patientRepository = patientRepository;
+            this.endpointInstance = endpointInstance;
         }
 
         public async Task DeleteLocationAsync(Location location)
@@ -26,30 +32,31 @@ namespace CoronaApp.Services
         }
 
         public async Task<Patient> GetAsync(int patientId)
-        {
+        {            
             return await _patientRepository.GetAsync(patientId);
         }
+
         public async Task SaveAsync(Patient patient)
         {
             await _patientRepository.SaveAsync(patient);
         }
-        
+
         public async Task<IdAndToken> LoginAsync(string userName, string password)
         {
             var p = await _patientRepository.LoginAsync(userName, password);
             if (p != null)
             {
-               /* var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                    new Claim(ClaimTypes.Name, p.Id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };*/
+                /* var tokenHandler = new JwtSecurityTokenHandler();
+                 var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
+                 var tokenDescriptor = new SecurityTokenDescriptor
+                 {
+                     Subject = new ClaimsIdentity(new Claim[]
+                     {
+                     new Claim(ClaimTypes.Name, p.Id.ToString())
+                     }),
+                     Expires = DateTime.UtcNow.AddDays(7),
+                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                 };*/
                 var token = CreatTokenInService(p.Id);
                 return new IdAndToken { Id = p.Id, Token = token };
             }
@@ -65,18 +72,18 @@ namespace CoronaApp.Services
         {
             if (await _patientRepository.RegisterAsync(id, userName, password))
             {
-              /*  var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                    new Claim(ClaimTypes.Name, id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);*/
+                /*  var tokenHandler = new JwtSecurityTokenHandler();
+                  var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
+                  var tokenDescriptor = new SecurityTokenDescriptor
+                  {
+                      Subject = new ClaimsIdentity(new Claim[]
+                      {
+                      new Claim(ClaimTypes.Name, id.ToString())
+                      }),
+                      Expires = DateTime.UtcNow.AddDays(7),
+                      SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                  };
+                  var token = tokenHandler.CreateToken(tokenDescriptor);*/
                 return CreatTokenInService(id);
             }
             else
@@ -101,5 +108,8 @@ namespace CoronaApp.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+
+        
     }
 }

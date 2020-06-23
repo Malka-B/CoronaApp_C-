@@ -1,0 +1,20 @@
+{
+  "NServiceBus.MessageId": "f96628a6-aea2-4e51-b30d-abe200a7f2cf",
+  "NServiceBus.MessageIntent": "Publish",
+  "NServiceBus.ConversationId": "d20aabb5-edc7-42f3-bb3f-abe200a7f2d7",
+  "NServiceBus.CorrelationId": "f96628a6-aea2-4e51-b30d-abe200a7f2cf",
+  "NServiceBus.ReplyToAddress": "CoronaApp",
+  "NServiceBus.OriginatingMachine": "C1",
+  "NServiceBus.OriginatingEndpoint": "CoronaApp",
+  "$.diagnostics.originating.hostid": "f795efe0cdc9b4f3efc95b5a2a8cd3c9",
+  "NServiceBus.ContentType": "text\/xml",
+  "NServiceBus.EnclosedMessageTypes": "Message.People, Message, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "NServiceBus.Version": "7.3.0",
+  "NServiceBus.TimeSent": "2020-06-22 10:11:29:000277 Z",
+  "NServiceBus.ProcessingStarted": "2020-06-22 10:11:30:439801 Z",
+  "NServiceBus.ProcessingEnded": "2020-06-22 10:11:32:413893 Z",
+  "$.diagnostics.hostid": "ba2055f447811136fbfc7dd04a584570",
+  "$.diagnostics.hostdisplayname": "C1",
+  "NServiceBus.ProcessingMachine": "C1",
+  "NServiceBus.ProcessingEndpoint": "HealthMinistry"
+}

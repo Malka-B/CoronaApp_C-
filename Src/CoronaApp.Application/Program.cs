@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-
+using NServiceBus;
 namespace CoronaApp.Api
 {
     public class Program
@@ -49,15 +49,18 @@ namespace CoronaApp.Api
             }
         }
 
+
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+           Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
                               .UseConfiguration(Configuration)
                               .UseSerilog();
                 });
-            
+        
+
         //.UseConfiguration(Configuration)
         //.UseSerilog();
     }

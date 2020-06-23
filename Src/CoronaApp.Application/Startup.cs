@@ -21,6 +21,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using NServiceBus;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Npgsql;
+using NpgsqlTypes;
+using NServiceBus.Persistence.Sql;
+using System.Data.SqlClient;
+using System.Globalization;
 
 namespace CoronaApp.Api
 {
@@ -34,32 +42,72 @@ namespace CoronaApp.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var endpointConfiguration = new EndpointConfiguration("CoronaApp");
+
+            var transport = endpointConfiguration.UseTransport<LearningTransport>();
+
+            var endpointInstance = await Endpoint.Start(endpointConfiguration)
+                .ConfigureAwait(false);
+            var connection = Configuration.GetConnectionString("PersistanceDBConnectionString");
+
+            var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
+
+            var subscription = persistence.SubscriptionSettings();
+            subscription.CacheFor(TimeSpan.FromMinutes(1));
+            persistence.SqlDialect<SqlDialect.MsSqlServer>();
+            persistence.ConnectionBuilder(
+                connectionBuilder: () =>
+                {
+                    return new SqlConnection(connection);
+                });
+
+            var recoverability = endpointConfiguration.Recoverability();
+            recoverability.Delayed(
+                delayed =>
+                {
+                    delayed.NumberOfRetries(2);
+                    delayed.TimeIncrease(TimeSpan.FromMinutes(5));
+                });
+
+            //var recoverability = endpointConfiguration.Recoverability();
+            //recoverability.Immediate(
+            //    immediate =>
+            //    {
+            //        immediate.NumberOfRetries(3);
+            //    });
+            services.AddScoped(typeof(IEndpointInstance), x => endpointInstance);
+
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<ILocationService, LocationService>();
 
+
+
             var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
+
+
+
             services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = false;
-                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = false;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            services.AddAuthorization();
 
             //services.AddAuthentication("")
             services.AddSwaggerGen(setupAction =>
@@ -98,10 +146,10 @@ namespace CoronaApp.Api
                             Name = "Bearer",
                             In = ParameterLocation.Header,
                         },
-                        new List<string>()
-                }
+                                        new List<string>()
+                    }
+                });
             });
-        });
 
             services.AddMvc();
             services.AddDbContext<CoronaContext>(
