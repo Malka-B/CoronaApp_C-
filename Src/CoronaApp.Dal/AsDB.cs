@@ -35,6 +35,11 @@ namespace CoronaApp.Dal
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateAsync(List<Location> location, int patientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

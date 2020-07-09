@@ -6,6 +6,6 @@ namespace Message
 {
     public interface IPeople
     {
-        
+        int PeopleId { get; set; }
     }
 }

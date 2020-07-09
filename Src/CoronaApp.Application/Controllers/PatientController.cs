@@ -27,12 +27,12 @@ namespace CoronaApp.Api.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IPatientService _patientService;
-        private IEndpointInstance _endpointInstance;
+       // private IEndpointInstance _endpointInstance;
 
-        public PatientController(IPatientService patientService,IEndpointInstance endpointInstance)
+        public PatientController(IPatientService patientService/*,IEndpointInstance endpointInstance*/)
         {
             _patientService = patientService;
-            _endpointInstance = endpointInstance;
+            //_endpointInstance = endpointInstance;
         }
 
         
@@ -78,10 +78,8 @@ namespace CoronaApp.Api.Controllers
                 var token = await _patientService.LoginAsync(authenticate.Username, authenticate.Password);
                 if (token != null)
                 {
-
                     return Ok(token);
                 }
-
                 else
                 {
                     return BadRequest(new { message = "Username or password is incorrect" });
@@ -100,7 +98,7 @@ namespace CoronaApp.Api.Controllers
         {
             try
             {
-                await NewPatientRegistered(register.Id);
+                //await NewPatientRegistered(register.Id);
                 var registerToken = await _patientService.RegisterAsync(register.Id, register.Username, register.Password);
                 return Ok(registerToken);
             }
@@ -123,48 +121,15 @@ namespace CoronaApp.Api.Controllers
                 Log.Information(e.Message);
             }
         }
-        static ILog log = LogManager.GetLogger<Program>();
+        //static ILog log = LogManager.GetLogger<Program>();
 
-
-
-        //private async Task LocationPostedEvent(List<Location> locations)
+        //private async Task NewPatientRegistered(int patientId)
         //{
-
-        //    var endpointConfiguration = new EndpointConfiguration("CoronaApp");
-
-        //    var transport = endpointConfiguration.UseTransport<LearningTransport>();
-
-        //    var endpointInstance = await Endpoint.Start(endpointConfiguration)
+        //    var people = new People { PeopleId = patientId };
+        //    await _endpointInstance.Publish(people)
         //        .ConfigureAwait(false);
-        //    foreach( var l in locations)
-        //    {
-        //        var command = new LocationEvent
-        //        {
-        //            StartDate = l.StartDate,
-        //            EndDate = l.EndDate,
-        //            City = l.City,
-        //            Adress = l.Adress
-        //        };
 
-        //        log.Info($"Sending LocationEvent event, location in city = {command.City}");
-
-        //        await endpointInstance.Publish(command)
-        //            .ConfigureAwait(false);
-        //    }
-
-
-        //    await endpointInstance.Stop()
-        //            .ConfigureAwait(false);
         //}
-
-
-        private async Task NewPatientRegistered(int patientId)
-        {
-            var people = new People { PeopleId = patientId };
-            await _endpointInstance.Publish(people)
-                .ConfigureAwait(false);
-
-        }
 
 
     }

@@ -10,5 +10,6 @@ namespace CoronaApp.Services
     {
         List<Location> Get();
         List<Location> Get(LocationSearch locationSearch);
+        Return GetAll(QueryParameters queryParameters);
     }
 }

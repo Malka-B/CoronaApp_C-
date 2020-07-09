@@ -1,0 +1,21 @@
+{
+  "NServiceBus.MessageId": "015ba48f-ce6e-41c8-a61d-abe3012da54d",
+  "NServiceBus.MessageIntent": "Publish",
+  "NServiceBus.RelatedTo": "80f472b6-9b04-4b7b-9b3b-abe3012da407",
+  "NServiceBus.ConversationId": "7345220c-e372-4b70-afbc-abe300a7d1c6",
+  "NServiceBus.CorrelationId": "89f2efe7-3aad-40ff-b8fb-abe300a7d1c5",
+  "NServiceBus.ReplyToAddress": "HealthMinistry",
+  "NServiceBus.OriginatingMachine": "C1",
+  "NServiceBus.OriginatingEndpoint": "HealthMinistry",
+  "$.diagnostics.originating.hostid": "ba2055f447811136fbfc7dd04a584570",
+  "NServiceBus.ContentType": "text\/xml",
+  "NServiceBus.EnclosedMessageTypes": "Message.People, Message, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "NServiceBus.Version": "7.3.0",
+  "NServiceBus.TimeSent": "2020-06-23 18:18:15:504872 Z",
+  "NServiceBus.ProcessingStarted": "2020-06-23 18:18:15:553905 Z",
+  "NServiceBus.ProcessingEnded": "2020-06-23 18:18:15:887922 Z",
+  "$.diagnostics.hostid": "ba2055f447811136fbfc7dd04a584570",
+  "$.diagnostics.hostdisplayname": "C1",
+  "NServiceBus.ProcessingMachine": "C1",
+  "NServiceBus.ProcessingEndpoint": "HealthMinistry"
+}

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System.Collections.Concurrent;
+using System.Linq.Dynamic.Core;
 
 namespace CoronaApp.Services.Models
 {
@@ -29,7 +31,7 @@ namespace CoronaApp.Services.Models
         {
             DateTime EmptyDate = new DateTime();
             //only location
-            if (locationSearch.Location != "" && locationSearch.StartDate == EmptyDate && locationSearch.EndDate == EmptyDate)
+            if ((locationSearch.Location != "" || locationSearch.Location != null)&& locationSearch.StartDate == EmptyDate && locationSearch.EndDate == EmptyDate)
             {
                 List<Location> LocationList = _CoronaContext.Location.ToList();
                 List<Location> searchList = LocationList.FindAll(x => x.Adress.ToLower().Contains(locationSearch.Location.ToLower()));
@@ -80,6 +82,27 @@ namespace CoronaApp.Services.Models
             */
             else
                 throw new Exception();
+        }
+
+        public IQueryable<Location> GetAll(QueryParameters queryParameters)
+        {
+            IQueryable<Location> _allItems = _CoronaContext.Location.OrderBy(queryParameters.OrderBy,
+              queryParameters.IsDescending());
+
+            if (queryParameters.HasQuery())
+            {
+                _allItems = _allItems
+                    .Where(x => x.City.ToString().Contains(queryParameters.Query.ToLowerInvariant()));
+            }
+
+            return _allItems
+                .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                .Take(queryParameters.PageCount);
+        }
+
+        public int Count()
+        {
+            return _CoronaContext.Location.Count();
         }
 
     }

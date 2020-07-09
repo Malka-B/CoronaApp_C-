@@ -15,6 +15,8 @@ namespace HealthMinistry
         public Task Handle(People message, IMessageHandlerContext context)
         {
             log.Info($"Patient Registered, his Id = {message.PeopleId}");
+            //context.Publish(message)
+            //    .ConfigureAwait(false);
             return Task.CompletedTask;
         }
     }

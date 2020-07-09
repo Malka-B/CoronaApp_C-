@@ -17,5 +17,10 @@ namespace CoronaApp.Services.Models
         {
             throw new NotImplementedException();
         }
+
+        public Return GetAll(QueryParameters queryParameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

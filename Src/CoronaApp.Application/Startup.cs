@@ -29,6 +29,8 @@ using NpgsqlTypes;
 using NServiceBus.Persistence.Sql;
 using System.Data.SqlClient;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace CoronaApp.Api
 {
@@ -44,51 +46,76 @@ namespace CoronaApp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public async void ConfigureServices(IServiceCollection services)
         {
-            var endpointConfiguration = new EndpointConfiguration("CoronaApp");
+          {  //var endpointConfiguration = new EndpointConfiguration("CoronaApp");
 
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
+            //var transport = endpointConfiguration.UseTransport<LearningTransport>();
 
-            var endpointInstance = await Endpoint.Start(endpointConfiguration)
-                .ConfigureAwait(false);
-            var connection = Configuration.GetConnectionString("PersistanceDBConnectionString");
+            
+                //var recoverabilityDelayed = endpointConfiguration.Recoverability();
+                //recoverabilityDelayed.Delayed(
+                //    delayed =>
+                //    {
+                //        delayed.NumberOfRetries(2);
+                //        delayed.TimeIncrease(TimeSpan.FromMinutes(5));
+                //    });
 
-            var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
+                //var recoverabilityImmediate = endpointConfiguration.Recoverability();
+                //recoverabilityImmediate.Immediate(
+                //    immediate =>
+                //    {
+                //        immediate.NumberOfRetries(3);
+                //    });
 
-            var subscription = persistence.SubscriptionSettings();
-            subscription.CacheFor(TimeSpan.FromMinutes(1));
-            persistence.SqlDialect<SqlDialect.MsSqlServer>();
-            persistence.ConnectionBuilder(
-                connectionBuilder: () =>
-                {
-                    return new SqlConnection(connection);
-                });
+                //var endpointInstance = await Endpoint.Start(endpointConfiguration)
+                //    .ConfigureAwait(false);
+                //var connection = Configuration.GetConnectionString("PersistanceDBConnectionString");
 
-            var recoverability = endpointConfiguration.Recoverability();
-            recoverability.Delayed(
-                delayed =>
-                {
-                    delayed.NumberOfRetries(2);
-                    delayed.TimeIncrease(TimeSpan.FromMinutes(5));
-                });
+                //var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
 
-            //var recoverability = endpointConfiguration.Recoverability();
-            //recoverability.Immediate(
-            //    immediate =>
-            //    {
-            //        immediate.NumberOfRetries(3);
-            //    });
-            services.AddScoped(typeof(IEndpointInstance), x => endpointInstance);
+                //var subscription = persistence.SubscriptionSettings();
+                //subscription.CacheFor(TimeSpan.FromMinutes(1));
+                //persistence.SqlDialect<SqlDialect.MsSqlServer>();
+                //persistence.ConnectionBuilder(
+                //    connectionBuilder: () =>
+                //    {
+                //        return new SqlConnection(connection);
+                //    });
 
+
+
+
+
+                //services.AddScoped(typeof(IEndpointInstance), x => endpointInstance);
+            }
+            services.AddScoped<ILoginRepository, LoginRepository>();
+            services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
             services.AddScoped<ILocationService, LocationService>();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                       builder =>
+                       {
+                           builder.AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod()
+                                  .WithExposedHeaders("X-Pagination");
+                       });
+            });
 
+            services.AddControllers();
 
             var key = Encoding.ASCII.GetBytes("ThisIsAnImportantSecret");
-
-
 
             services.AddAuthentication(x =>
                 {
@@ -107,6 +134,7 @@ namespace CoronaApp.Api
                         ValidateAudience = false
                     };
                 });
+
             services.AddAuthorization();
 
             //services.AddAuthentication("")
@@ -168,6 +196,8 @@ namespace CoronaApp.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseSwagger();
 

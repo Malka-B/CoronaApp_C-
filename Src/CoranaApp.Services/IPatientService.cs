@@ -19,5 +19,7 @@ namespace CoronaApp.Services
         public Task<IdAndToken> LoginAsync(string userName, string password);
                 
         public Task<string> RegisterAsync(int id, string userName, string password);
+       
+        public Task UpdateAsync(List<Location> location, int patientId);
     }
 }

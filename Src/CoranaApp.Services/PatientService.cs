@@ -17,13 +17,13 @@ namespace CoronaApp.Services
     public class PatientService : IPatientService
     {
         private readonly IPatientRepository _patientRepository;
-        private readonly IEndpointInstance endpointInstance;
+        
           
 
-        public PatientService(IPatientRepository patientRepository, IEndpointInstance endpointInstance)
+        public PatientService(IPatientRepository patientRepository)
         {
             _patientRepository = patientRepository;
-            this.endpointInstance = endpointInstance;
+            
         }
 
         public async Task DeleteLocationAsync(Location location)
@@ -109,7 +109,9 @@ namespace CoronaApp.Services
             return tokenHandler.WriteToken(token);
         }
 
-
-        
+        public async Task UpdateAsync(List<Location> location, int patientId)
+        {
+            await _patientRepository.UpdateAsync(location, patientId);
+        }
     }
 }

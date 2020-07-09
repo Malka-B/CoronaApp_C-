@@ -83,11 +83,22 @@ namespace CoronaApp.Dal
         //                               && p.Password == password);
         //}
 
+        public async Task UpdateAsync(List<Location> location, int patientId)
+        {
+            Patient patientToUpdate = await GetPatientByIdAsync(patientId);
+
+            patientToUpdate.LocationsList.AddRange(location);
+
+            await _coronaContext.SaveChangesAsync();
+        }
+
         private async Task<Patient> GetPatientByIdAsync(int patientId)
         {
             return await _coronaContext.Patient
                             .Include(p => p.LocationsList)
                             .FirstOrDefaultAsync(p => p.Id == patientId);
         }
+
+
     }
 }
